@@ -25,15 +25,11 @@ public class StopListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        final String[] items = {"Test", "France", "LOL", "Test", "France", "LOL", "Test", "France", "LOL", "Test", "France", "LOL"};
-        final ArrayAdapter<String> aa = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, items);
-
-
         MainActivity currentActivity = (MainActivity) getActivity();
-        StopListAdapter adapter = new StopListAdapter(currentActivity, android.R.layout.simple_list_item_1, currentActivity.getStops());
-        setListAdapter(adapter);
+        if(currentActivity.getStops() != null){
+            StopListAdapter adapter = new StopListAdapter(currentActivity, android.R.layout.simple_list_item_1, currentActivity.getStops());
+            setListAdapter(adapter);
+        }
     }
 
 
