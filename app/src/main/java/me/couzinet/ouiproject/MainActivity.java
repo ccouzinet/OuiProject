@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -108,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
                     StopListFragment stopListFragment = new StopListFragment();
                     fragmentTransaction.add(R.id.testFra, stopListFragment);
                     fragmentTransaction.commit();
+
+
+                    ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.GONE);
 
 
                    /* StopListAdapter adapter = new StopListAdapter(MainActivity.this, android.R.layout.simple_list_item_1, stops);
