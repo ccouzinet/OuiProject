@@ -55,6 +55,8 @@ public class StopListFragment extends ListFragment {
         intent.putExtra("stopName", stop.getLongName());
         intent.putExtra("stopShortName", stop.getShortName());
         intent.putExtra("stopAddress", stop.getAddress());
+        intent.putExtra("stopLat", Double.parseDouble(stop.getLatitude()));
+        intent.putExtra("stopLng", Double.parseDouble(stop.getLongitude()));
         this.startActivity(intent);
     }
 }
