@@ -37,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
     private final static String ENDPOINT_STOPS = "/stops";
     private final static String API_KEY_OUIBUS = "lkyAQryj-IoQK6Xb9VtIPQ";
     private RequestQueue queue;
+    private Stop[] stops;
+
+    public Stop[] getStops() {
+        return stops;
+    }
+
+    public void setStops(Stop[] stops) {
+        this.stops = stops;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +56,7 @@ public class MainActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
         getData();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        StopListFragment stopListFragment = new StopListFragment();
-        fragmentTransaction.add(R.id.testFra, stopListFragment);
-        fragmentTransaction.commit();
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -95,12 +100,19 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new GsonBuilder().create();
                 try {
                     JSONArray jsonArray = response.getJSONArray("stops");
-                    Stop[] stops = gson.fromJson(jsonArray.toString(), Stop[].class);
+                    stops = gson.fromJson(jsonArray.toString(), Stop[].class);
                     Log.d("TAG", stops[1].toString());
 
-                    StopListAdapter adapter = new StopListAdapter(MainActivity.this, android.R.layout.simple_list_item_1, stops);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    StopListFragment stopListFragment = new StopListFragment();
+                    fragmentTransaction.add(R.id.testFra, stopListFragment);
+                    fragmentTransaction.commit();
+
+
+                   /* StopListAdapter adapter = new StopListAdapter(MainActivity.this, android.R.layout.simple_list_item_1, stops);
                     ListView listView = (ListView) findViewById(R.id.stopListView);
-                    listView.setAdapter(adapter);
+                    listView.setAdapter(adapter); */
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
