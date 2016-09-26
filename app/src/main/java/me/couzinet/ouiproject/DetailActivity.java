@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private double lat;
     private double lng;
+    private String stopName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        String stopName = getIntent().getStringExtra("stopName");
+        stopName = getIntent().getStringExtra("stopName");
         String stopShortName = getIntent().getStringExtra("stopShortName");
         String stopAddress = getIntent().getStringExtra("stopAddress");
         lat = getIntent().getDoubleExtra("stopLat", 0.0);
@@ -44,7 +45,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng stopCoords = new LatLng(lat, lng);
-        googleMap.addMarker(new MarkerOptions().position(stopCoords).title("Test"));
+        googleMap.addMarker(new MarkerOptions().position(stopCoords).title(stopName));
         //googleMap.moveCamera(CameraUpdateFactory.newLatLng(stopCoords));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(stopCoords,8));
     }
