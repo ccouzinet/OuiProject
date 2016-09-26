@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String API_KEY_OUIBUS = "lkyAQryj-IoQK6Xb9VtIPQ";
     private RequestQueue queue;
     private Stop[] stops;
+    private TabLayout tabs;
 
     public Stop[] getStops() {
         return stops;
@@ -52,13 +54,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tabs = (TabLayout) findViewById(R.id.tabs);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         queue = Volley.newRequestQueue(this);
         getData();
 
+        tabs.addTab(tabs.newTab().setText("Liste"));
+        tabs.addTab(tabs.newTab().setText("Carte"));
+        tabs.addTab(tabs.newTab().setText("Details"));
 
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
 
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -142,4 +165,5 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
 
     }
+
 }

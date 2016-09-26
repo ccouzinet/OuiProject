@@ -22,6 +22,9 @@ public class Stop {
     private String latitude;
     private String longitude;
 
+    @SerializedName("stops")
+    private Stop[] stops;
+
     public int[] getDestinationsId() {
         return destinationsId;
     }
@@ -101,6 +104,7 @@ public class Stop {
                 ", longName='" + longName + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
+                ", stops=" + Arrays.toString(stops) +
                 ", destinationsId=" + Arrays.toString(destinationsId) +
                 '}';
     }
