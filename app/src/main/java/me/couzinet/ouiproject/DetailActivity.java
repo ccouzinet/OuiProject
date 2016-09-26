@@ -1,7 +1,9 @@
 package me.couzinet.ouiproject;
 
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,6 +21,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -44,5 +47,16 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         googleMap.addMarker(new MarkerOptions().position(stopCoords).title("Test"));
         //googleMap.moveCamera(CameraUpdateFactory.newLatLng(stopCoords));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(stopCoords,8));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
