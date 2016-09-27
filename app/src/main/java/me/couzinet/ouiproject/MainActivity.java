@@ -23,9 +23,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mMapFragment = MapFragment.newInstance();
                         fragmentTransaction.replace(R.id.testFra, mMapFragment);
                         fragmentTransaction.commit();
+                        mMapFragment.getMapAsync(MainActivity.this);
                         break;
                     case 2:
                         Log.d("Tab", "Tab 2");
@@ -191,6 +196,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        //TODO : Prendre en compte les sous-stops
+        LatLngBounds.Builder mapBounds = new LatLngBounds.Builder();
 
+        for(Stop s: stops){
+            if(s.getLatitude() != null && s.getLongitude() != null){
+                LatLng stopCoords = new LatLng(Double.parseDouble(s.getLatitude()), Double.parseDouble(s.getLongitude()));
+                googleMap.addMarker(new MarkerOptions().position(stopCoords).title(s.getLongName()));
+                mapBounds.include(stopCoords);
+            }
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mapBounds.build(), 50));
     }
 }
