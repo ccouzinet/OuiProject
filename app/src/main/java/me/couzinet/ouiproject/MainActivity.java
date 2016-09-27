@@ -23,6 +23,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,7 +36,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final static String BASE_URL = "https://api.idbus.com/v2";
     private final static String ENDPOINT_STOPS = "/stops";
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
     private Stop[] stops;
     private TabLayout tabs;
+    private MapFragment mMapFragment;
 
     public Stop[] getStops() {
         return stops;
@@ -69,6 +73,25 @@ public class MainActivity extends AppCompatActivity {
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                switch (tab.getPosition()){
+                    case 0:
+                        Log.d("Tab", "Tab 0");
+                        StopListFragment stopListFragment = new StopListFragment();
+                        fragmentTransaction.replace(R.id.testFra, stopListFragment);
+                        fragmentTransaction.commit();
+                        break;
+                    case 1:
+                        Log.d("Tab", "Tab 1");
+                        mMapFragment = MapFragment.newInstance();
+                        fragmentTransaction.replace(R.id.testFra, mMapFragment);
+                        fragmentTransaction.commit();
+                        break;
+                    case 2:
+                        Log.d("Tab", "Tab 2");
+                        break;
+                }
 
             }
 
@@ -166,4 +189,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
 }
