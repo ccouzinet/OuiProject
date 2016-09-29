@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,13 +54,8 @@ public class StopListFragment extends ListFragment {
         Stop stop = adapter.getItem(position);
         Log.d("TAG", stop != null ? stop.toString() : null);
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("stopName", stop.getLongName());
-        intent.putExtra("stopShortName", stop.getShortName());
-        intent.putExtra("stopAddress", stop.getAddress());
-        if(stop.getLongitude() != null && stop.getLatitude() != null){
-            intent.putExtra("stopLat", Double.parseDouble(stop.getLatitude()));
-            intent.putExtra("stopLng", Double.parseDouble(stop.getLongitude()));
-        }
+        Gson gson = new Gson();
+        intent.putExtra("stopObj", gson.toJson(stop));
         this.startActivity(intent);
     }
 }

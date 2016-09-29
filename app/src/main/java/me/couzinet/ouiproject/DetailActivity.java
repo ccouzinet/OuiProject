@@ -15,11 +15,17 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private double lat;
     private double lng;
     private String stopName;
+    private MenuItem favoritesMenu;
+    private Stop stop;
+    SharedPreference sharedPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +40,23 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        stopName = getIntent().getStringExtra("stopName");
-        String stopShortName = getIntent().getStringExtra("stopShortName");
-        String stopAddress = getIntent().getStringExtra("stopAddress");
-        lat = getIntent().getDoubleExtra("stopLat", 0.0);
-        lng = getIntent().getDoubleExtra("stopLng", 0.0);
+        Gson gson = new Gson();
+        String jsonStop = getIntent().getStringExtra("stopObj");
+        stop = gson.fromJson(jsonStop, Stop.class);
+
+        //TODO : Stocker directement les latitudes et longitudes en Double
+        if(stop.getLongitude() != null && stop.getLatitude() != null){
+            lat = Double.parseDouble(stop.getLatitude());
+            lng = Double.parseDouble(stop.getLongitude());
+        }
 
         TextView textViewName = (TextView) findViewById(R.id.textView);
         TextView textViewShortName = (TextView) findViewById(R.id.textView4);
         TextView textViewAddress = (TextView) findViewById(R.id.textView5);
 
-        textViewAddress.setText(stopAddress);
-        textViewName.setText(stopName);
-        textViewShortName.setText(stopShortName);
+        textViewAddress.setText(stop.getAddress());
+        textViewName.setText(stop.getLongName());
+        textViewShortName.setText(stop.getShortName());
     }
 
     @Override
@@ -64,6 +74,15 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.action_favorite:
+                //TODO : Gérer le cas où le stop est déjà en favori.
+                if(checkFavoriteItem(stop)){
+                    favoritesMenu.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    sharedPreference.removeFavorite(getApplicationContext(), stop);
+                }else{
+                    favoritesMenu.setIcon(R.drawable.ic_favorite_black_24dp);
+                    sharedPreference.addFavorite(getApplicationContext(), stop);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -72,6 +91,27 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+        favoritesMenu = menu.findItem(R.id.action_favorite);
+        if(checkFavoriteItem(stop)){
+            favoritesMenu.setIcon(R.drawable.ic_favorite_black_24dp);
+        }else{
+            favoritesMenu.setIcon(R.drawable.ic_favorite_border_black_24dp);
+        }
         return true;
+    }
+
+    public boolean checkFavoriteItem(Stop checkStop) {
+        sharedPreference = new SharedPreference();
+        boolean check = false;
+        List<Stop> favorites = sharedPreference.getFavorites(getApplicationContext());
+        if (favorites != null) {
+            for (Stop product : favorites) {
+                if (product.equals(checkStop)) {
+                    check = true;
+                    break;
+                }
+            }
+        }
+        return check;
     }
 }
