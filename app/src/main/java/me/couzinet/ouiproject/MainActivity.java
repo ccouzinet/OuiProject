@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final static String BASE_URL = "https://api.idbus.com/v2";
     private final static String ENDPOINT_STOPS = "/stops";
     private final static String API_KEY_OUIBUS = "lkyAQryj-IoQK6Xb9VtIPQ";
+    private final static String TAG = MainActivity.class.getSimpleName();
+
     private RequestQueue queue;
     private Stop[] stops;
     private TabLayout tabs;
@@ -70,46 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         queue = Volley.newRequestQueue(this);
         getData();
 
-        tabs.addTab(tabs.newTab().setText("Liste"));
-        tabs.addTab(tabs.newTab().setText("Carte"));
-        tabs.addTab(tabs.newTab().setText("Details"));
-
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                switch (tab.getPosition()){
-                    case 0:
-                        Log.d("Tab", "Tab 0");
-                        StopListFragment stopListFragment = new StopListFragment();
-                        fragmentTransaction.replace(R.id.testFra, stopListFragment);
-                        fragmentTransaction.commit();
-                        break;
-                    case 1:
-                        Log.d("Tab", "Tab 1");
-                        mMapFragment = MapFragment.newInstance();
-                        fragmentTransaction.replace(R.id.testFra, mMapFragment);
-                        fragmentTransaction.commit();
-                        mMapFragment.getMapAsync(MainActivity.this);
-                        break;
-                    case 2:
-                        Log.d("Tab", "Tab 2");
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        createTabs();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlStops, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d(TAG, "Request DONE");
                 Gson gson = new GsonBuilder().create();
                 try {
                     JSONArray jsonArray = response.getJSONArray("stops");
@@ -204,8 +168,63 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng stopCoords = new LatLng(Double.parseDouble(s.getLatitude()), Double.parseDouble(s.getLongitude()));
                 googleMap.addMarker(new MarkerOptions().position(stopCoords).title(s.getLongName()));
                 mapBounds.include(stopCoords);
+            } else {
+                for(Stop sousS: s.getStops()){
+                    if(sousS.getLatitude() != null && sousS.getLongitude() != null){
+                        LatLng stopCoords = new LatLng(Double.parseDouble(sousS.getLatitude()), Double.parseDouble(sousS.getLongitude()));
+                        googleMap.addMarker(new MarkerOptions().position(stopCoords).title(sousS.getLongName()));
+                        mapBounds.include(stopCoords);
+                    }
+                }
             }
         }
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mapBounds.build(), 50));
+    }
+
+    /**
+     * Create the tabs
+     */
+    private void createTabs(){
+
+        tabs.addTab(tabs.newTab().setText("Liste"));
+        tabs.addTab(tabs.newTab().setText("Carte"));
+        tabs.addTab(tabs.newTab().setText("Details"));
+
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                switch (tab.getPosition()){
+                    case 0:
+                        Log.d("Tab", "Tab 0");
+                        StopListFragment stopListFragment = new StopListFragment();
+                        fragmentTransaction.replace(R.id.testFra, stopListFragment);
+                        fragmentTransaction.commit();
+                        break;
+                    case 1:
+                        Log.d("Tab", "Tab 1");
+                        mMapFragment = MapFragment.newInstance();
+                        fragmentTransaction.replace(R.id.testFra, mMapFragment);
+                        fragmentTransaction.commit();
+                        mMapFragment.getMapAsync(MainActivity.this);
+                        break;
+                    case 2:
+                        Log.d("Tab", "Tab 2");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }

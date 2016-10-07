@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 
 public class Stop {
-
+    //TODO réorganiser cette classe
     private int id;
 
     /**
@@ -155,6 +155,14 @@ public class Stop {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Stop[] getStops() {
+        return stops;
+    }
+
+    public void setStops(Stop[] stops) {
+        this.stops = stops;
     }
 
     @Override
