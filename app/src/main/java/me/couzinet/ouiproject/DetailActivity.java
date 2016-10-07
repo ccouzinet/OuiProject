@@ -1,5 +1,6 @@
 package me.couzinet.ouiproject;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -77,13 +78,16 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.action_favorite:
-                //TODO : Gérer le cas où le stop est déjà en favori.
                 if(checkFavoriteItem(stop)){
                     favoritesMenu.setIcon(R.drawable.ic_favorite_border_black_24dp);
                     sharedPreference.removeFavorite(getApplicationContext(), stop);
+                    Snackbar.make(findViewById(R.id.detail_coordinator), "Successfully removed from favorites", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }else{
                     favoritesMenu.setIcon(R.drawable.ic_favorite_black_24dp);
                     sharedPreference.addFavorite(getApplicationContext(), stop);
+                    Snackbar.make(findViewById(R.id.detail_coordinator), "Successfully added to favorites", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
         }
         return super.onOptionsItemSelected(item);
