@@ -1,5 +1,6 @@
 package me.couzinet.ouiproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,6 +41,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Stop[] stops;
     private TabLayout tabs;
     private MapFragment mMapFragment;
+    private HashMap <Marker, Stop> hashMapMarker;
 
     public Stop[] getStops() {
         return stops;
@@ -73,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getData();
 
         createTabs();
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                    /* StopListAdapter adapter = new StopListAdapter(MainActivity.this, android.R.layout.simple_list_item_1, stops);
                     ListView listView = (ListView) findViewById(R.id.stopListView);
                     listView.setAdapter(adapter); */
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -162,23 +169,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         //TODO : Prendre en compte les sous-stops
         LatLngBounds.Builder mapBounds = new LatLngBounds.Builder();
+        hashMapMarker = new HashMap<Marker, Stop>();
 
         for(Stop s: stops){
             if(s.getLatitude() != null && s.getLongitude() != null){
                 LatLng stopCoords = new LatLng(Double.parseDouble(s.getLatitude()), Double.parseDouble(s.getLongitude()));
-                googleMap.addMarker(new MarkerOptions().position(stopCoords).title(s.getLongName()));
+                Marker m = googleMap.addMarker(new MarkerOptions().position(stopCoords).title(s.getLongName()));
+                hashMapMarker.put(m, s);
                 mapBounds.include(stopCoords);
             } else {
                 for(Stop sousS: s.getStops()){
                     if(sousS.getLatitude() != null && sousS.getLongitude() != null){
                         LatLng stopCoords = new LatLng(Double.parseDouble(sousS.getLatitude()), Double.parseDouble(sousS.getLongitude()));
-                        googleMap.addMarker(new MarkerOptions().position(stopCoords).title(sousS.getLongName()));
+                        Marker m = googleMap.addMarker(new MarkerOptions().position(stopCoords).title(sousS.getLongName()));
+                        hashMapMarker.put(m, sousS);
                         mapBounds.include(stopCoords);
                     }
                 }
             }
         }
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mapBounds.build(), 50));
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Stop stop = (Stop) hashMapMarker.get(marker);
+                Log.d(TAG, "Objet : "+stop.toString());
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                Gson gson = new Gson();
+                intent.putExtra("stopObj", gson.toJson(stop));
+                startActivity(intent);
+            }
+        });
     }
 
     /**
