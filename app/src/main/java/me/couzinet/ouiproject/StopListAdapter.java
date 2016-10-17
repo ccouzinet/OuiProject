@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class StopListAdapter extends ArrayAdapter<Stop> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public StopListAdapter(Context context, int resource, Stop[] objects) {
+    public StopListAdapter(Context context, int resource, List<Stop> objects) {
         super(context, resource, objects);
     }
 
