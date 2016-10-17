@@ -1,19 +1,18 @@
 package me.couzinet.ouiproject;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
@@ -41,7 +40,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -232,6 +230,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         break;
                     case 2:
                         Log.d("Tab", "Tab 2");
+                        DetailTabFragment detailTabFragment = new DetailTabFragment();
+                        fragmentTransaction.replace(R.id.testFra, detailTabFragment);
+                        fragmentTransaction.commit();
                         break;
                 }
 
