@@ -104,9 +104,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.refresh){
+            getData();
         }
 
         return super.onOptionsItemSelected(item);
@@ -114,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void getData(){
         String urlStops = BASE_URL + ENDPOINT_STOPS;
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlStops, null, new Response.Listener<JSONObject>() {
             @Override
@@ -128,11 +129,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     StopListFragment stopListFragment = new StopListFragment();
-                    fragmentTransaction.add(R.id.testFra, stopListFragment);
+                    fragmentTransaction.replace(R.id.testFra, stopListFragment);
                     fragmentTransaction.commit();
+                    TabLayout.Tab tab = tabs.getTabAt(0);
+                    tab.select();
 
-
-                    ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
                     progressBar.setVisibility(View.GONE);
 
 
