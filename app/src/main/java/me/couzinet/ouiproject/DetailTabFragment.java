@@ -15,7 +15,7 @@ public class DetailTabFragment extends Fragment {
 
 
     public DetailTabFragment() {
-        // Required empty public constructor
+        // Required empty public construction
     }
 
 
@@ -27,10 +27,11 @@ public class DetailTabFragment extends Fragment {
         textView1.setText(("URL : " + MainActivity.BASE_URL));
         TextView textView2 = (TextView) rootView.findViewById(R.id.url_String2);
         textView2.setText(("KEY : " + MainActivity.API_KEY_OUIBUS));
-        /*TextView textView3 = (TextView) rootView.findViewById(R.id.url_String3);
-        textView1.setText(MainActivity.ENDPOINT_STOPS);
+        int numberOfStops = ((MainActivity) getActivity()).getStops().length;
+        TextView textView3 = (TextView) rootView.findViewById(R.id.url_String3);
+        textView3.setText(("Number of Stops : " + String.valueOf(numberOfStops)));
         TextView textView4 = (TextView) rootView.findViewById(R.id.url_String4);
-        textView1.setText(MainActivity.TAG);*/
+        textView4.setText(("API utilisée : OuiBUS API"));
 
         return rootView;
     }
