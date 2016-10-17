@@ -43,10 +43,10 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private final static String BASE_URL = "https://api.idbus.com/v2";
-    private final static String ENDPOINT_STOPS = "/stops";
-    private final static String API_KEY_OUIBUS = "lkyAQryj-IoQK6Xb9VtIPQ";
-    private final static String TAG = MainActivity.class.getSimpleName();
+    public final static String BASE_URL = "https://api.idbus.com/v2";
+    public final static String ENDPOINT_STOPS = "/stops";
+    public final static String API_KEY_OUIBUS = "lkyAQryj-IoQK6Xb9VtIPQ";
+    public final static String TAG = MainActivity.class.getSimpleName();
 
     private RequestQueue queue;
     private Stop[] stops;
