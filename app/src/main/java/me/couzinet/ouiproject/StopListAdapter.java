@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public class StopListAdapter extends ArrayAdapter<Stop> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public StopListAdapter(Context context, int resource, Stop[] objects) {
+    public StopListAdapter(Context context, int resource, List<Stop> objects) {
         super(context, resource, objects);
     }
 
@@ -35,9 +37,13 @@ public class StopListAdapter extends ArrayAdapter<Stop> {
 
         TextView textView = (TextView) itemView.findViewById(R.id.textView2);
         TextView textView2 = (TextView) itemView.findViewById(R.id.textView3);
+        ImageView imgView = (ImageView) itemView.findViewById(R.id.imageView);
 
         Stop stop = getItem(position);
 
+        if(stop.getStops() != null && stop.getStops().length != 0){
+            imgView.setImageResource(R.drawable.ouibuslogoblue);
+        }
         textView.setText(stop.getShortName());
         textView2.setText(stop.getLongName());
 

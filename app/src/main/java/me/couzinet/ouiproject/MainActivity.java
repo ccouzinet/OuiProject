@@ -3,7 +3,6 @@ package me.couzinet.ouiproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.design.widget.TabLayout;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
@@ -41,8 +39,10 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final static String BASE_URL = "https://api.idbus.com/v2";
@@ -53,16 +53,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private RequestQueue queue;
     private Stop[] stops;
     private TabLayout tabs;
-    private MapFragment mMapFragment;
+    private MapFragment mapFragment;
     private HashMap <Marker, Stop> hashMapMarker;
-
-    public Stop[] getStops() {
-        return stops;
-    }
-
-    public void setStops(Stop[] stops) {
-        this.stops = stops;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +66,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         queue = Volley.newRequestQueue(this);
+
         getData();
-
         createTabs();
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, FavoritesActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -104,41 +94,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.refresh){
+            getData();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Get data.
+     * Call the API to get the stops
+     */
     public void getData(){
         String urlStops = BASE_URL + ENDPOINT_STOPS;
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlStops, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d(TAG, "Request DONE");
                 Gson gson = new GsonBuilder().create();
                 try {
                     JSONArray jsonArray = response.getJSONArray("stops");
                     stops = gson.fromJson(jsonArray.toString(), Stop[].class);
-                    Log.d("TAG", stops[1].toString());
 
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     StopListFragment stopListFragment = new StopListFragment();
-                    fragmentTransaction.add(R.id.testFra, stopListFragment);
+                    fragmentTransaction.replace(R.id.testFra, stopListFragment);
                     fragmentTransaction.commit();
 
-
-                    ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                    TabLayout.Tab tab = tabs.getTabAt(0);
+                    tab.select();
                     progressBar.setVisibility(View.GONE);
-
-
-                   /* StopListAdapter adapter = new StopListAdapter(MainActivity.this, android.R.layout.simple_list_item_1, stops);
-                    ListView listView = (ListView) findViewById(R.id.stopListView);
-                    listView.setAdapter(adapter); */
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -167,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        //TODO : Prendre en compte les sous-stops
         LatLngBounds.Builder mapBounds = new LatLngBounds.Builder();
         hashMapMarker = new HashMap<Marker, Stop>();
 
@@ -192,8 +179,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Stop stop = (Stop) hashMapMarker.get(marker);
-                Log.d(TAG, "Objet : "+stop.toString());
+                Stop stop = hashMapMarker.get(marker);
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 Gson gson = new Gson();
                 intent.putExtra("stopObj", gson.toJson(stop));
@@ -218,20 +204,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 switch (tab.getPosition()){
                     case 0:
-                        Log.d("Tab", "Tab 0");
                         StopListFragment stopListFragment = new StopListFragment();
                         fragmentTransaction.replace(R.id.testFra, stopListFragment);
                         fragmentTransaction.commit();
                         break;
                     case 1:
-                        Log.d("Tab", "Tab 1");
-                        mMapFragment = MapFragment.newInstance();
-                        fragmentTransaction.replace(R.id.testFra, mMapFragment);
+                        mapFragment = MapFragment.newInstance();
+                        fragmentTransaction.replace(R.id.testFra, mapFragment);
                         fragmentTransaction.commit();
-                        mMapFragment.getMapAsync(MainActivity.this);
+                        mapFragment.getMapAsync(MainActivity.this);
                         break;
                     case 2:
-                        Log.d("Tab", "Tab 2");
                         break;
                 }
 
@@ -247,5 +230,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
+    }
+
+    /**
+     * Get stops stop [ ].
+     *
+     * @return stops [ ]
+     */
+    public Stop[] getStops() {
+        return stops;
+    }
+
+    /**
+     * Sets stops.
+     *
+     * @param stops the stops
+     */
+    public void setStops(Stop[] stops) {
+        this.stops = stops;
     }
 }
