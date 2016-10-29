@@ -20,12 +20,15 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+/**
+ * The type Detail activity.
+ */
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private double lat;
     private double lng;
-    private String stopName;
     private MenuItem favoritesMenu;
     private Stop stop;
+
     SharedPreference sharedPreference;
 
     @Override
@@ -65,7 +68,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng stopCoords = new LatLng(lat, lng);
-        googleMap.addMarker(new MarkerOptions().position(stopCoords).title(stopName));
+        googleMap.addMarker(new MarkerOptions().position(stopCoords).title(stop.getLongName()));
         //googleMap.moveCamera(CameraUpdateFactory.newLatLng(stopCoords));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(stopCoords,8));
     }
@@ -106,6 +109,12 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         return true;
     }
 
+    /**
+     * Check if the stop is in the favorites list
+     *
+     * @param checkStop stop to be checked
+     * @return the boolean
+     */
     public boolean checkFavoriteItem(Stop checkStop) {
         sharedPreference = new SharedPreference();
         boolean check = false;
