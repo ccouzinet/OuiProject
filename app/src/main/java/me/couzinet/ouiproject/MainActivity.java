@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -162,15 +163,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         hashMapMarker = new HashMap<Marker, Stop>();
 
         for(Stop s: stops){
-            if(s.getLatitude() != null && s.getLongitude() != null){
-                LatLng stopCoords = new LatLng(Double.parseDouble(s.getLatitude()), Double.parseDouble(s.getLongitude()));
+            if(s.getLatitude() != 0.0 && s.getLongitude() != 0.0){
+                LatLng stopCoords = new LatLng(s.getLatitude(), s.getLongitude());
                 Marker m = googleMap.addMarker(new MarkerOptions().position(stopCoords).title(s.getLongName()));
                 hashMapMarker.put(m, s);
                 mapBounds.include(stopCoords);
             } else {
                 for(Stop sousS: s.getStops()){
-                    if(sousS.getLatitude() != null && sousS.getLongitude() != null){
-                        LatLng stopCoords = new LatLng(Double.parseDouble(sousS.getLatitude()), Double.parseDouble(sousS.getLongitude()));
+                    if(sousS.getLatitude() != 0.0 && sousS.getLongitude() != 0.0){
+                        LatLng stopCoords = new LatLng(sousS.getLatitude(), sousS.getLongitude());
                         Marker m = googleMap.addMarker(new MarkerOptions().position(stopCoords).title(sousS.getLongName()));
                         hashMapMarker.put(m, sousS);
                         mapBounds.include(stopCoords);

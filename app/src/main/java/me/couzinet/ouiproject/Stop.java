@@ -8,10 +8,205 @@ import java.util.HashMap;
 /**
  * Created by coren on 23/09/2016.
  */
-
 public class Stop {
-    //TODO réorganiser cette classe
+
     private int id;
+    private String address;
+
+    @SerializedName("short_name")
+    private String shortName;
+
+    @SerializedName("long_name")
+    private String longName;
+
+    @SerializedName("stops")
+    private Stop[] stops;
+
+    private float latitude;
+    private float longitude;
+
+    @SerializedName("destinations_ids")
+    private int[] destinationsId;
+
+    /**
+     * Instantiates a new Stop.
+     *
+     * @param id             the id
+     * @param address        the address
+     * @param shortName      the short name
+     * @param longName       the long name
+     * @param latitude       the latitude
+     * @param longitude      the longitude
+     * @param destinationsId the destinations id
+     */
+    public Stop(int id, String address, String shortName, String longName, float latitude, float longitude, int[] destinationsId) {
+        this.id = id;
+        this.address = address;
+        this.shortName = shortName;
+        this.longName = longName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.destinationsId = destinationsId;
+    }
+
+    /**
+     * Gets address.
+     *
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * Sets address.
+     *
+     * @param address the address
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * Gets short name.
+     *
+     * @return the short name
+     */
+    public String getShortName() {
+        return shortName;
+    }
+
+    /**
+     * Sets short name.
+     *
+     * @param shortName the short name
+     */
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    /**
+     * Gets long name.
+     *
+     * @return the long name
+     */
+    public String getLongName() {
+        return longName;
+    }
+
+    /**
+     * Sets long name.
+     *
+     * @param longName the long name
+     */
+    public void setLongName(String longName) {
+        this.longName = longName;
+    }
+
+    /**
+     * Gets latitude.
+     *
+     * @return the latitude
+     */
+    public float getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * Sets latitude.
+     *
+     * @param latitude the latitude
+     */
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    /**
+     * Gets longitude.
+     *
+     * @return the longitude
+     */
+    public float getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * Sets longitude.
+     *
+     * @param longitude the longitude
+     */
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
+
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
+    public int getId() {
+
+        return id;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Get stops stop [ ].
+     *
+     * @return the stop [ ]
+     */
+    public Stop[] getStops() {
+        return stops;
+    }
+
+    /**
+     * Sets stops.
+     *
+     * @param stops the stops
+     */
+    public void setStops(Stop[] stops) {
+        this.stops = stops;
+    }
+
+    /**
+     * Get destinations id int [ ].
+     *
+     * @return the int [ ]
+     */
+    public int[] getDestinationsId() {
+        return destinationsId;
+    }
+
+    /**
+     * Sets destinations id.
+     *
+     * @param destinationsId the destinations id
+     */
+    public void setDestinationsId(int[] destinationsId) {
+        this.destinationsId = destinationsId;
+    }
+
+    @Override
+    public String toString() {
+        return "Stop{" +
+                "id=" + id +
+                ", address='" + address + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", longName='" + longName + '\'' +
+                ", stops=" + Arrays.toString(stops) +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", destinationsId=" + Arrays.toString(destinationsId) +
+                '}';
+    }
 
     /**
      * Indicates whether some other object is "equal to" this one.
@@ -71,111 +266,5 @@ public class Stop {
         if (id != other.id)
             return false;
         return true;
-    }
-
-    private String address;
-
-    @SerializedName("short_name")
-    private String shortName;
-
-    @SerializedName("long_name")
-    private String longName;
-
-    private String latitude;
-    private String longitude;
-
-    @SerializedName("stops")
-    private Stop[] stops;
-
-    public int[] getDestinationsId() {
-        return destinationsId;
-    }
-
-    public void setDestinationsId(int[] destinationsId) {
-        this.destinationsId = destinationsId;
-    }
-
-    @SerializedName("destinations_ids")
-    private int[] destinationsId;
-
-    public Stop(int id, String address, String shortName, String longName, String latitude, String longitude, int[] destinationsId) {
-        this.id = id;
-        this.address = address;
-        this.shortName = shortName;
-        this.longName = longName;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.destinationsId = destinationsId;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public String getLongName() {
-        return longName;
-    }
-
-    public void setLongName(String longName) {
-        this.longName = longName;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public int getId() {
-
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Stop[] getStops() {
-        return stops;
-    }
-
-    public void setStops(Stop[] stops) {
-        this.stops = stops;
-    }
-
-    @Override
-    public String toString() {
-        return "Stop{" +
-                "id=" + id +
-                ", address='" + address + '\'' +
-                ", shortName='" + shortName + '\'' +
-                ", longName='" + longName + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", longitude='" + longitude + '\'' +
-                ", stops=" + Arrays.toString(stops) +
-                ", destinationsId=" + Arrays.toString(destinationsId) +
-                '}';
     }
 }

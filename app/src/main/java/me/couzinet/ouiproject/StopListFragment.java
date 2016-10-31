@@ -29,6 +29,9 @@ public class StopListFragment extends ListFragment {
     private StopListAdapter adapter;
     private List<Stop> stopDisplayed;
 
+    /**
+     * Instantiates a new Stop list fragment.
+     */
     public StopListFragment() {
         // Required empty public constructor
     }
@@ -67,13 +70,12 @@ public class StopListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Stop stop = adapter.getItem(position);
-        Log.d("TAG", stop != null ? stop.toString() : null);
+        Gson gson = new Gson();
         if(stop.getStops() != null && stop.getStops().length != 0){
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             StopListFragment stopListFragment = new StopListFragment();
             Bundle args = new Bundle();
-            Gson gson = new Gson();
             args.putString("sStops",gson.toJson(stop.getStops()));
             stopListFragment.setArguments(args);
             fragmentTransaction.replace(R.id.testFra, stopListFragment);
@@ -81,7 +83,6 @@ public class StopListFragment extends ListFragment {
             fragmentTransaction.commit();
         } else {
             Intent intent = new Intent(getActivity(), DetailActivity.class);
-            Gson gson = new Gson();
             intent.putExtra("stopObj", gson.toJson(stop));
             this.startActivity(intent);
         }

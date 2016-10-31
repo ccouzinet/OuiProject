@@ -23,15 +23,9 @@ public class DetailTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail_tab,container, false);
-        TextView textView1 = (TextView) rootView.findViewById(R.id.url_String1);
+        TextView textView1 = (TextView) rootView.findViewById(R.id.txtView_url);
         textView1.setText(("URL : " + MainActivity.BASE_URL));
-        TextView textView2 = (TextView) rootView.findViewById(R.id.url_String2);
-        textView2.setText(("KEY : " + MainActivity.API_KEY_OUIBUS));
         int numberOfStops = ((MainActivity) getActivity()).getStops().length;
-        TextView textView3 = (TextView) rootView.findViewById(R.id.url_String3);
-        textView3.setText(("Number of Stops : " + String.valueOf(numberOfStops)));
-        TextView textView4 = (TextView) rootView.findViewById(R.id.url_String4);
-        textView4.setText(("API utilisée : OuiBUS API"));
 
         return rootView;
     }

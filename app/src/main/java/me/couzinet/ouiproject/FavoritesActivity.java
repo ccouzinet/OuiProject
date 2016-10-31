@@ -6,9 +6,22 @@ import android.widget.ListView;
 
 import java.util.List;
 
+/**
+ * The type Favorites activity.
+ */
 public class FavoritesActivity extends AppCompatActivity {
+    /**
+     * The Shared preference used to managed users' favorites
+     * @see SharedPreference
+     */
     SharedPreference sharedPreference;
+    /**
+     * The List view to display favorites
+     */
     ListView listView;
+    /**
+     * The Adapter.
+     */
     StopListAdapter adapter;
 
     @Override

@@ -50,12 +50,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         String jsonStop = getIntent().getStringExtra("stopObj");
         stop = gson.fromJson(jsonStop, Stop.class);
 
-        //TODO : Stocker directement les latitudes et longitudes en Double
-        if(stop.getLongitude() != null && stop.getLatitude() != null){
-            lat = Double.parseDouble(stop.getLatitude());
-            lng = Double.parseDouble(stop.getLongitude());
-        }
-
         TextView textViewName = (TextView) findViewById(R.id.textView);
         TextView textViewShortName = (TextView) findViewById(R.id.textView4);
         TextView textViewAddress = (TextView) findViewById(R.id.textView5);
@@ -67,7 +61,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng stopCoords = new LatLng(lat, lng);
+        LatLng stopCoords = new LatLng(stop.getLatitude(), stop.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(stopCoords).title(stop.getLongName()));
         //googleMap.moveCamera(CameraUpdateFactory.newLatLng(stopCoords));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(stopCoords,8));
@@ -113,7 +107,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
      * Check if the stop is in the favorites list
      *
      * @param checkStop stop to be checked
-     * @return the boolean
+     * @return boolean check
      */
     public boolean checkFavoriteItem(Stop checkStop) {
         sharedPreference = new SharedPreference();

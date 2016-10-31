@@ -12,16 +12,30 @@ import java.util.List;
 /**
  * Created by coren on 29/09/2016.
  */
-
 public class SharedPreference {
 
+    /**
+     * The constant PREF_TAG.
+     */
     public static final String PREF_TAG = "OUIAPP";
+    /**
+     * The constant FAVORITES.
+     */
     public static final String FAVORITES = "OuiStops_Favorites";
 
+    /**
+     * Instantiates a new Shared preference.
+     */
     public SharedPreference() {
         super();
     }
 
+    /**
+     * Save favorites on the device
+     *
+     * @param context   the context
+     * @param favorites the favorites
+     */
     public void saveFavorites(Context context, List<Stop> favorites) {
         SharedPreferences sharedPref;
         SharedPreferences.Editor editor;
@@ -34,6 +48,12 @@ public class SharedPreference {
         editor.commit();
     }
 
+    /**
+     * Add favorite to the favorites list
+     *
+     * @param context the context
+     * @param stop    the stop to add
+     */
     public void addFavorite(Context context, Stop stop){
         List<Stop> favorites = getFavorites(context);
         if(favorites == null)
@@ -42,6 +62,12 @@ public class SharedPreference {
         saveFavorites(context, favorites);
     }
 
+    /**
+     * Remove favorite from the favorites list
+     *
+     * @param context the context
+     * @param stop    the stop to add
+     */
     public void removeFavorite(Context context, Stop stop){
         ArrayList<Stop> favorites = getFavorites(context);
         if(favorites != null){
@@ -50,6 +76,12 @@ public class SharedPreference {
         }
     }
 
+    /**
+     * Get favorites array list from the device
+     *
+     * @param context the context
+     * @return the array list containing the favorites stops
+     */
     public ArrayList<Stop> getFavorites(Context context){
         SharedPreferences sharedPref;
         SharedPreferences.Editor editor;

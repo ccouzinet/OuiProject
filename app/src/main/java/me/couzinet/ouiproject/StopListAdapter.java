@@ -9,21 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by coren on 23/09/2016.
  */
-
 public class StopListAdapter extends ArrayAdapter<Stop> {
 
     /**
      * Constructor
      *
      * @param context  The current context.
-     * @param resource The resource ID for a layout file containing a TextView to use when
-     *                 instantiating views.
+     * @param resource The resource ID for a layout file containing a TextView to use when                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
     public StopListAdapter(Context context, int resource, List<Stop> objects) {
@@ -35,8 +32,8 @@ public class StopListAdapter extends ArrayAdapter<Stop> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View itemView = LayoutInflater.from(getContext()).inflate(R.layout.layout_stop_list, parent, false);
 
-        TextView textView = (TextView) itemView.findViewById(R.id.textView2);
-        TextView textView2 = (TextView) itemView.findViewById(R.id.textView3);
+        TextView villeTextView = (TextView) itemView.findViewById(R.id.textview_ville_stop_list);
+        TextView nomTextView = (TextView) itemView.findViewById(R.id.textview_nom_stop_list);
         ImageView imgView = (ImageView) itemView.findViewById(R.id.imageView);
 
         Stop stop = getItem(position);
@@ -44,8 +41,8 @@ public class StopListAdapter extends ArrayAdapter<Stop> {
         if(stop.getStops() != null && stop.getStops().length != 0){
             imgView.setImageResource(R.drawable.ouibuslogoblue);
         }
-        textView.setText(stop.getShortName());
-        textView2.setText(stop.getLongName());
+        villeTextView.setText(stop.getShortName());
+        nomTextView.setText(stop.getLongName());
 
         return itemView;
     }
