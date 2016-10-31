@@ -3,10 +3,10 @@
     <string name="action_settings">Paramètres</string>
     <string name="refresh">Rafraichir</string>
 
-    <string name="card_infos_title">Infos application</string>
+    <string name="card_infos_title">Informations</string>
     <string name="api_URL">Lien : https://api.idbus.com/</string>
     <string name="infos_subhead">API Ouibus</string>
-    <string name="infos_description">Ouibus is a subsidiary of SNCF wich operates coach services in Europe. This API is free to use. \nThis API provides a list of Ouibus stops and usefull informations.</string>
+    <string name="infos_description">Ouibus est une filiale du Groupe SNCF, exploitant depuis juillet 2012 un réseau de lignes d\'autocars longue distance en France et en Europe. Cette API est gratuite. \nCette API donne des informations concernant les arrêts de bus de la compagnie OUIBUS ainsi que leurs informations utiles.</string>
     <string name="lib_title">Libraries</string>
     <string name="lib_content">
         SDK Version : 24 \nGSON : serialization/deserialization library \nVolley : HTTP library \n
