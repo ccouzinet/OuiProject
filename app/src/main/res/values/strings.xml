@@ -3,8 +3,6 @@
     <string name="action_settings">Paramètres</string>
     <string name="refresh">Rafraichir</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="card_infos_title">Infos application</string>
     <string name="api_URL">Lien : https://api.idbus.com/</string>
     <string name="infos_subhead">API Ouibus</string>

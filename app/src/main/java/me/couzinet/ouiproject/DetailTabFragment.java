@@ -23,10 +23,6 @@ public class DetailTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail_tab,container, false);
-        TextView textView1 = (TextView) rootView.findViewById(R.id.txtView_url);
-        textView1.setText(("URL : " + MainActivity.BASE_URL));
-        int numberOfStops = ((MainActivity) getActivity()).getStops().length;
-
         return rootView;
     }
 }
